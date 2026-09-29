@@ -1,0 +1,333 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to WAHA",
+        "description": "Enter your self-hosted WAHA server's address and API key.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port",
+          "ssl": "Use HTTPS",
+          "api_key": "API key",
+          "session": "Session name"
+        }
+      },
+      "session": {
+        "title": "Create the WAHA session?",
+        "description": "The session \"{session}\" does not exist on this WAHA server yet. Home Assistant can create it now."
+      },
+      "callback_url": {
+        "title": "Set the webhook callback URL",
+        "description": "Home Assistant could not determine a URL WAHA can use to reach it. Enter the base URL WAHA should use (e.g. http://192.168.1.10:8123).",
+        "data": {
+          "callback_base_url": "Callback base URL"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate WAHA",
+        "description": "The API key for this WAHA connection is no longer valid. Enter a new one.",
+        "data": {
+          "api_key": "API key"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure WAHA connection",
+        "description": "Session \"{session}\" cannot be changed here -- add a new connection instead.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port",
+          "ssl": "Use HTTPS",
+          "api_key": "API key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The API key was rejected by WAHA.",
+      "insufficient_permissions": "This API key does not have permission for that action.",
+      "cannot_connect": "Could not reach the WAHA server.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "A connection to this WAHA session already exists."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "callback_base_url": "Callback base URL override",
+          "fire_message_sent_events": "Fire an event for messages sent from WhatsApp itself"
+        }
+      },
+      "send_queue": {
+        "title": "Sending and pacing",
+        "data": {
+          "notify_target": "Notify target (a chat or group id)",
+          "notify_lane": "Notify lane",
+          "send_queue_preset": "Pacing preset",
+          "normal_hourly_cap": "Normal-lane hourly cap per chat",
+          "auto_restart_enabled": "Automatically restart a failed or stopped session"
+        },
+        "data_description": {
+          "send_queue_preset": "\"off\" (default) skips the human-like typing delay and pacing gap; the typing pipeline itself still runs.",
+          "auto_restart_enabled": "Off by default -- a dashboard-initiated stop looks the same as a fault, so this can restart a session you meant to leave stopped."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "connected": {
+        "name": "Connected"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Session status"
+      },
+      "last_webhook_received": {
+        "name": "Last webhook received"
+      }
+    },
+    "image": {
+      "qr_code": {
+        "name": "QR code"
+      }
+    }
+  },
+  "services": {
+    "register_webhook": {
+      "name": "Register webhook",
+      "description": "Force-registers (or repairs) this integration's webhook on the WAHA session, even if it is currently WORKING.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Connection",
+          "description": "Which WAHA connection to target (only needed if you have more than one)."
+        }
+      }
+    },
+    "unregister_webhook": {
+      "name": "Unregister webhook",
+      "description": "Removes this integration's webhook from the WAHA session.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Connection",
+          "description": "Which WAHA connection to target (only needed if you have more than one)."
+        }
+      }
+    },
+    "request_pairing_code": {
+      "name": "Request pairing code",
+      "description": "Requests a WhatsApp pairing code as an alternative to scanning the QR code.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Connection",
+          "description": "Which WAHA connection to target (only needed if you have more than one)."
+        },
+        "phone_number": {
+          "name": "Phone number",
+          "description": "The WhatsApp number to link, in international format."
+        }
+      }
+    },
+    "send_message": {
+      "name": "Send message",
+      "description": "Sends a text message to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "message": { "name": "Message", "description": "The text to send." },
+        "reply_to": { "name": "Reply to", "description": "The full message id being replied to (starts with true_ or false_)." },
+        "link_preview": { "name": "Link preview", "description": "Show a link preview for any URL in the message." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_image": {
+      "name": "Send image",
+      "description": "Sends an image to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "file_path": { "name": "File path", "description": "A local file path (must be under allowlist_external_dirs; exclusive with URL)." },
+        "url": { "name": "URL", "description": "A URL WAHA fetches itself -- Home Assistant never fetches it (exclusive with File path)." },
+        "caption": { "name": "Caption", "description": "Caption text shown with the image." },
+        "filename": { "name": "Filename", "description": "Override the filename sent to WhatsApp." },
+        "mimetype": { "name": "MIME type", "description": "Override the detected MIME type." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_file": {
+      "name": "Send file",
+      "description": "Sends a document/file to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "file_path": { "name": "File path", "description": "A local file path (must be under allowlist_external_dirs; exclusive with URL)." },
+        "url": { "name": "URL", "description": "A URL WAHA fetches itself -- Home Assistant never fetches it (exclusive with File path)." },
+        "caption": { "name": "Caption", "description": "Caption text shown with the file." },
+        "filename": { "name": "Filename", "description": "Override the filename sent to WhatsApp." },
+        "mimetype": { "name": "MIME type", "description": "Override the detected MIME type." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_voice": {
+      "name": "Send voice message",
+      "description": "Sends a voice note to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "file_path": { "name": "File path", "description": "A local file path (must be under allowlist_external_dirs; exclusive with URL)." },
+        "url": { "name": "URL", "description": "A URL WAHA fetches itself -- Home Assistant never fetches it (exclusive with File path)." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_video": {
+      "name": "Send video",
+      "description": "Sends a video to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "file_path": { "name": "File path", "description": "A local file path (must be under allowlist_external_dirs; exclusive with URL)." },
+        "url": { "name": "URL", "description": "A URL WAHA fetches itself -- Home Assistant never fetches it (exclusive with File path)." },
+        "caption": { "name": "Caption", "description": "Caption text shown with the video." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_sticker": {
+      "name": "Send sticker",
+      "description": "Sends a sticker to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "file_path": { "name": "File path", "description": "A local file path (must be under allowlist_external_dirs; exclusive with URL)." },
+        "url": { "name": "URL", "description": "A URL WAHA fetches itself -- Home Assistant never fetches it (exclusive with File path)." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_poll": {
+      "name": "Send poll",
+      "description": "Sends a poll to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "question": { "name": "Question", "description": "The poll's question." },
+        "options": { "name": "Options", "description": "A list of at least two answer options." },
+        "multiple_answers": { "name": "Multiple answers", "description": "Allow selecting more than one option." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_location": {
+      "name": "Send location",
+      "description": "Sends a location to a phone number or a group by name.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "chat_id": { "name": "Chat ID", "description": "The recipient's chat id (exclusive with Group name)." },
+        "group_name": { "name": "Group name", "description": "The recipient group's display name (exclusive with Chat ID)." },
+        "latitude": { "name": "Latitude", "description": "The location's latitude." },
+        "longitude": { "name": "Longitude", "description": "The location's longitude." },
+        "name": { "name": "Name", "description": "A label for the location." },
+        "address": { "name": "Address", "description": "An address line for the location." },
+        "priority": { "name": "Priority", "description": "normal (human-paced) or alert (faster, for urgent notices)." },
+        "wait": { "name": "Wait", "description": "Block until sent and return the message id, instead of queuing and returning immediately." }
+      }
+    },
+    "send_reaction": {
+      "name": "Send reaction",
+      "description": "Reacts to a message with an emoji.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." },
+        "message_id": { "name": "Message ID", "description": "The full message id to react to." },
+        "emoji": { "name": "Emoji", "description": "The reaction emoji, or empty to remove a reaction." }
+      }
+    },
+    "get_groups": {
+      "name": "Get groups",
+      "description": "Returns the cached list of WhatsApp groups.",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." }
+      }
+    },
+    "refresh_groups": {
+      "name": "Refresh groups",
+      "description": "Forces a fresh fetch of WhatsApp groups from WAHA (rate-limited to once per 5 minutes).",
+      "fields": {
+        "config_entry_id": { "name": "Connection", "description": "Which WAHA connection to target (only needed if you have more than one)." }
+      }
+    }
+  },
+  "issues": {
+    "needs_link": {
+      "title": "WhatsApp needs to be linked",
+      "description": "Scan the QR code entity with your phone, or use this repair to request a pairing code instead.",
+      "fix_flow": {
+        "step": {
+          "phone_number": {
+            "title": "Enter your phone number",
+            "description": "Enter the WhatsApp number to link, in international format.",
+            "data": {
+              "phone_number": "Phone number"
+            }
+          },
+          "show_code": {
+            "title": "Enter this code in WhatsApp",
+            "description": "On your phone: WhatsApp > Linked Devices > Link with phone number > enter the code: {code}"
+          }
+        }
+      }
+    },
+    "webhook_drift": {
+      "title": "Webhook needs to be re-registered",
+      "description": "The WAHA session is WORKING, so re-registering the webhook requires a brief restart of the session. Continue?",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Re-register the webhook?",
+            "description": "This restarts the WhatsApp session for a few seconds."
+          }
+        }
+      }
+    },
+    "webhook_drift_unfixable": {
+      "title": "Webhook registration could not be repaired automatically",
+      "description": "Home Assistant could not safely bring the WAHA session's webhook configuration back in line. Check the WAHA dashboard directly."
+    },
+    "hmac_mismatch": {
+      "title": "Webhook signature key may be out of date",
+      "description": "Home Assistant has rejected many webhook deliveries with an invalid signature. This can regenerate the key and re-register it.",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Rotate the webhook signature key?",
+            "description": "This restarts the WhatsApp session for a few seconds if it is currently WORKING."
+          }
+        }
+      }
+    },
+    "webhook_unreachable": {
+      "title": "No webhook deliveries received",
+      "description": "The WhatsApp session has been WORKING for a while, but Home Assistant has not received any webhook deliveries from it -- including its own connectivity self-check. Check that WAHA can reach Home Assistant's address, and consider setting a callback URL override in this integration's options."
+    },
+    "passkey_required": {
+      "title": "WhatsApp passkey confirmation needed",
+      "description": "WAHA is waiting for passkey linking, which this integration doesn't support directly. Open the WAHA dashboard to continue: {dashboard_url}"
+    },
+    "send_rate_limited": {
+      "title": "WhatsApp is rate-limiting sends",
+      "description": "WAHA returned a rate-limit response for a send. The affected chat (or the whole session) is cooling down automatically; nothing is restarted or re-paired."
+    }
+  }
+}

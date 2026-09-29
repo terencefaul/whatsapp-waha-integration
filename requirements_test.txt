@@ -1,0 +1,7 @@
+# Pinned to what was verified to install cleanly on Python 3.14 during milestone 1.
+# hassfest itself does not ship in the `homeassistant` wheel (only in a core git
+# checkout's script/hassfest), so it is not runnable from this file alone -- see
+# tests/test_portability.py's manifest-schema check, which substitutes for it,
+# and the milestone log for why.
+homeassistant==2026.9.4
+pytest-homeassistant-custom-component==0.13.367

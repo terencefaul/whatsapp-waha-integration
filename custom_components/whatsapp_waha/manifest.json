@@ -1,0 +1,14 @@
+{
+  "domain": "whatsapp_waha",
+  "name": "WhatsApp (WAHA)",
+  "codeowners": ["@terencefaul"],
+  "config_flow": true,
+  "dependencies": ["webhook"],
+  "after_dependencies": ["notify"],
+  "documentation": "https://github.com/terencefaul/homeassistant-addons/tree/main/whatsapp-waha-integration",
+  "issue_tracker": "https://github.com/terencefaul/homeassistant-addons/issues",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "requirements": [],
+  "version": "0.2.0"
+}

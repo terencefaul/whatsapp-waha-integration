@@ -1,0 +1,394 @@
+register_webhook:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+
+unregister_webhook:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+
+request_pairing_code:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    phone_number:
+      required: true
+      selector:
+        text:
+
+send_message:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    message:
+      required: true
+      selector:
+        text:
+          multiline: true
+    reply_to:
+      required: false
+      selector:
+        text:
+    link_preview:
+      required: false
+      default: false
+      selector:
+        boolean:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_image:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    file_path:
+      required: false
+      selector:
+        text:
+    url:
+      required: false
+      selector:
+        text:
+    caption:
+      required: false
+      selector:
+        text:
+    filename:
+      required: false
+      selector:
+        text:
+    mimetype:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_file:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    file_path:
+      required: false
+      selector:
+        text:
+    url:
+      required: false
+      selector:
+        text:
+    caption:
+      required: false
+      selector:
+        text:
+    filename:
+      required: false
+      selector:
+        text:
+    mimetype:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_voice:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    file_path:
+      required: false
+      selector:
+        text:
+    url:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_video:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    file_path:
+      required: false
+      selector:
+        text:
+    url:
+      required: false
+      selector:
+        text:
+    caption:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_sticker:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    file_path:
+      required: false
+      selector:
+        text:
+    url:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_poll:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    question:
+      required: true
+      selector:
+        text:
+    options:
+      required: true
+      selector:
+        object:
+    multiple_answers:
+      required: false
+      default: false
+      selector:
+        boolean:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_location:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    chat_id:
+      required: false
+      selector:
+        text:
+    group_name:
+      required: false
+      selector:
+        text:
+    latitude:
+      required: true
+      selector:
+        number:
+          min: -90
+          max: 90
+          step: any
+    longitude:
+      required: true
+      selector:
+        number:
+          min: -180
+          max: 180
+          step: any
+    name:
+      required: false
+      selector:
+        text:
+    address:
+      required: false
+      selector:
+        text:
+    priority:
+      required: false
+      default: normal
+      selector:
+        select:
+          options:
+            - normal
+            - alert
+    wait:
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_reaction:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+    message_id:
+      required: true
+      selector:
+        text:
+    emoji:
+      required: true
+      selector:
+        text:
+
+get_groups:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:
+
+refresh_groups:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        text:

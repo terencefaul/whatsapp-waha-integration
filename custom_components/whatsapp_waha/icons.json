@@ -1,0 +1,71 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "connected": {
+        "default": "mdi:whatsapp"
+      }
+    },
+    "sensor": {
+      "status": {
+        "default": "mdi:list-status"
+      },
+      "last_webhook_received": {
+        "default": "mdi:webhook"
+      }
+    },
+    "image": {
+      "qr_code": {
+        "default": "mdi:qrcode"
+      }
+    },
+    "notify": {
+      "notify": {
+        "default": "mdi:whatsapp"
+      }
+    }
+  },
+  "services": {
+    "register_webhook": {
+      "service": "mdi:webhook"
+    },
+    "unregister_webhook": {
+      "service": "mdi:webhook-off"
+    },
+    "request_pairing_code": {
+      "service": "mdi:cellphone-key"
+    },
+    "send_message": {
+      "service": "mdi:message-text"
+    },
+    "send_image": {
+      "service": "mdi:image"
+    },
+    "send_file": {
+      "service": "mdi:file"
+    },
+    "send_voice": {
+      "service": "mdi:microphone"
+    },
+    "send_video": {
+      "service": "mdi:video"
+    },
+    "send_sticker": {
+      "service": "mdi:sticker-emoji"
+    },
+    "send_poll": {
+      "service": "mdi:poll"
+    },
+    "send_location": {
+      "service": "mdi:map-marker"
+    },
+    "send_reaction": {
+      "service": "mdi:emoticon-outline"
+    },
+    "get_groups": {
+      "service": "mdi:account-group"
+    },
+    "refresh_groups": {
+      "service": "mdi:refresh"
+    }
+  }
+}
