@@ -1,10 +1,6 @@
 # WhatsApp (WAHA)
 
-> Installable via HACS as a custom repository:
-> `terencefaul/whatsapp-waha-integration`. That repo is a generated mirror
-> (via `git subtree split`) of this folder — please open issues/PRs against
-> [`terencefaul/homeassistant-addons`](https://github.com/terencefaul/homeassistant-addons)
-> instead.
+Installable via HACS as a custom repository: `terencefaul/whatsapp-waha-integration`.
 
 A Home Assistant custom integration that connects to your self-hosted [WAHA](https://waha.devlike.pro/)
 (WhatsApp HTTP API) server, so Home Assistant can send and receive WhatsApp
